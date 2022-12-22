@@ -4,9 +4,16 @@ import Table from 'react-bootstrap/Table'
 import { getUsers } from '../redux/slices/usersSlice'
 import Button from 'react-bootstrap/Button'
 import { ButtonGroup } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import {
+  createSearchParams,
+  Link,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom'
 
 const UsersList = () => {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { users } = useSelector((state) => state.users)
   const tableHead = [
@@ -21,6 +28,15 @@ const UsersList = () => {
   useEffect(() => {
     dispatch(getUsers())
   }, [])
+
+  const setQuery = (id) => {
+    navigate({
+      pathname: 'modal',
+      search: createSearchParams({
+        userId: id,
+      }).toString(),
+    })
+  }
 
   return (
     <div className='rounded-1 overflow-hidden card shadow'>
@@ -56,9 +72,16 @@ const UsersList = () => {
                   <td>
                     <ButtonGroup size='sm' className='mt-2'>
                       <Button variant='primary'>
-                        <Link to={`/posts/${id}`}>Posts</Link>
+                        <Link className='text-white' to={`/posts/${id}`}>
+                          Posts
+                        </Link>
                       </Button>
-                      <Button variant='primary'>Albums</Button>
+                      <Button onClick={() => setQuery(id)} variant='primary'>
+                        {/* <Link className='text-white' to={`/modal`}>
+                          Albums
+                        </Link> */}
+                        Albums
+                      </Button>
                     </ButtonGroup>
                   </td>
                 </tr>
