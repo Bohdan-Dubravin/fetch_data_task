@@ -1,37 +1,29 @@
-import React from 'react'
-import { Table } from 'react-bootstrap'
+import { useEffect } from 'react'
+import { Spinner } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { useSearchParams } from 'react-router-dom'
+import { getPosts } from '../redux/slices/postsSlice'
+import TableComponent from './TableComponent'
 
-const PostsList = ({ list, tableHead }) => {
+const PostsList = () => {
+  const dispatch = useDispatch()
+  const { status, posts } = useSelector((state) => state.posts)
+  const [searchParams] = useSearchParams()
+  const tableHead = ['id', 'title', 'body']
+
+  useEffect(() => {
+    const userId = searchParams.get('userId')
+    dispatch(getPosts(userId))
+  }, [])
+
   return (
-    <div className='rounded-1 overflow-hidden card shadow'>
-      <Table
-        stripped
-        responsive='sm'
-        hover
-        size='sm'
-        className='table align-items-center table-flush'
-      >
-        <thead className='thead-light fw-semibold '>
-          <tr>
-            {tableHead.map((cell) => {
-              return <td key={cell}>{cell}</td>
-            })}
-          </tr>
-        </thead>
-        <tbody className='table-group-divider'>
-          {list.length &&
-            list.map((item) => {
-              return (
-                <tr>
-                  <td>{item.id}</td>
-                  <td>{item.title}</td>
-                  <td>{item.body}</td>
-                </tr>
-              )
-            })}
-        </tbody>
-      </Table>
-    </div>
+    <>
+      {status === 'loading' ? (
+        <Spinner className='mx-auto mt-20' />
+      ) : (
+        <TableComponent tableHead={tableHead} data={posts} />
+      )}
+    </>
   )
 }
 

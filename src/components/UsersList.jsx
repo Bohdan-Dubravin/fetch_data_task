@@ -29,9 +29,9 @@ const UsersList = () => {
     dispatch(getUsers())
   }, [])
 
-  const setQuery = (id) => {
+  const setQuery = (path, id) => {
     navigate({
-      pathname: 'modal',
+      pathname: path,
       search: createSearchParams({
         userId: id,
       }).toString(),
@@ -40,14 +40,8 @@ const UsersList = () => {
 
   return (
     <div className='rounded-1 overflow-hidden card shadow'>
-      <Table
-        stripped
-        responsive='sm'
-        hover
-        size='sm'
-        className='table align-items-center table-flush'
-      >
-        <thead className='thead-light fw-semibold '>
+      <Table stripped responsive='sm' hover size='sm' className='m-0'>
+        <thead className='bg-primary rounded-2 text-white  bg-gradient fw-semibold'>
           <tr>
             {tableHead.map((cell) => {
               return <td key={cell}>{cell}</td>
@@ -71,15 +65,16 @@ const UsersList = () => {
                   </td>
                   <td>
                     <ButtonGroup size='sm' className='mt-2'>
-                      <Button variant='primary'>
-                        <Link className='text-white' to={`/posts/${id}`}>
-                          Posts
-                        </Link>
+                      <Button
+                        variant='outline-primary'
+                        onClick={() => setQuery('posts', id)}
+                      >
+                        Posts
                       </Button>
-                      <Button onClick={() => setQuery(id)} variant='primary'>
-                        {/* <Link className='text-white' to={`/modal`}>
-                          Albums
-                        </Link> */}
+                      <Button
+                        onClick={() => setQuery('modal', id)}
+                        variant='outline-primary'
+                      >
                         Albums
                       </Button>
                     </ButtonGroup>

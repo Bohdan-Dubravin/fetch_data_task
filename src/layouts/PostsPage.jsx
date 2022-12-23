@@ -1,36 +1,25 @@
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import PostsList from '../components/PostsList'
-import { getPosts } from '../redux/slices/postsSlice'
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { Button, Spinner } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
+import { useNavigate } from 'react-router'
+import { useSelector } from 'react-redux'
+import { useSearchParams } from 'react-router-dom'
 
 const PostsPage = () => {
-  const { id } = useParams()
   const navigate = useNavigate()
-  const [searchParams, setSearchParams] = useSearchParams()
-  const dispatch = useDispatch()
-  const { posts } = useSelector((state) => state.posts)
   const { users } = useSelector((state) => state.users)
-
-  const tableHead = ['id', 'title', 'body']
-
-  useEffect(() => {
-    setSearchParams({ id })
-    dispatch(getPosts(id))
-  }, [])
+  const [searchParams] = useSearchParams()
+  const userId = searchParams.get('userId')
+  const userName = users.find(
+    (user) => user.id.toString() === userId.toString()
+  ).name
 
   return (
     <div>
-      <h2> posts</h2>
-      <Button onClick={() => navigate(-1)} size='sm'>
+      <h2>Posts {userName && `of ${userName}`}</h2>
+      <Button className='d-block mb-5' onClick={() => navigate(-1)} size='sm'>
         Back
       </Button>
-      {posts.length ? (
-        <PostsList tableHead={tableHead} list={posts} />
-      ) : (
-        <Spinner animation='border' variant='primary' />
-      )}
+      <PostsList />
     </div>
   )
 }
