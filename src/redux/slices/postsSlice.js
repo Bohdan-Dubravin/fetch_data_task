@@ -31,7 +31,7 @@ export const postsSlice = createSlice({
       state.status = 'loading'
     })
     builder.addCase(getPosts.rejected, (state, action) => {
-      state.status = action.payload
+      state.status = 'error'
     })
   },
 })

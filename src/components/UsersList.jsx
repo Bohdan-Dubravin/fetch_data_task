@@ -6,16 +6,16 @@ import Button from 'react-bootstrap/Button'
 import { ButtonGroup } from 'react-bootstrap'
 import {
   createSearchParams,
-  Link,
   useNavigate,
   useSearchParams,
 } from 'react-router-dom'
+import { showModal } from '../redux/slices/modalSlice'
 
 const UsersList = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { users } = useSelector((state) => state.users)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const { users, status } = useSelector((state) => state.users)
   const tableHead = [
     'Id',
     'Full name',
@@ -36,6 +36,15 @@ const UsersList = () => {
         userId: id,
       }).toString(),
     })
+  }
+
+  const displayModal = (userId) => {
+    setSearchParams({ userId })
+    dispatch(showModal())
+  }
+
+  if (!status && !users.length) {
+    return <h3>No users found</h3>
   }
 
   return (
@@ -72,7 +81,7 @@ const UsersList = () => {
                         Posts
                       </Button>
                       <Button
-                        onClick={() => setQuery('modal', id)}
+                        onClick={() => displayModal(id)}
                         variant='outline-primary'
                       >
                         Albums

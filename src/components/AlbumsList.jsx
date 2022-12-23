@@ -16,6 +16,10 @@ const AlbumsList = () => {
     dispatch(getAlbums(userId))
   }, [])
 
+  if (!status && !albums.length) {
+    return <h3>No albums found</h3>
+  }
+
   return (
     <>
       {status === 'loading' ? (

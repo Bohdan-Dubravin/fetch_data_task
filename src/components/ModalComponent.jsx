@@ -1,15 +1,14 @@
-import { useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
-import { useNavigate } from 'react-router'
+import { useDispatch, useSelector } from 'react-redux'
+import { hideModal } from '../redux/slices/modalSlice'
 
 const ModalComponent = ({ modalTitle, component }) => {
-  const navigate = useNavigate()
-  const [show, setShow] = useState(true)
+  const { show } = useSelector((state) => state.modal)
+  const dispatch = useDispatch()
 
   const handleClose = () => {
-    setShow(false)
-    navigate(-1)
+    dispatch(hideModal())
   }
 
   return (

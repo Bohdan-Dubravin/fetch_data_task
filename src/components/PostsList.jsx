@@ -16,6 +16,10 @@ const PostsList = () => {
     dispatch(getPosts(userId))
   }, [])
 
+  if (!status && !posts.length) {
+    return <h3>No posts found</h3>
+  }
+
   return (
     <>
       {status === 'loading' ? (

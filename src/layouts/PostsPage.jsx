@@ -11,7 +11,7 @@ const PostsPage = () => {
   const userId = searchParams.get('userId')
   const userName = users.find(
     (user) => user.id.toString() === userId.toString()
-  ).name
+  )?.name
 
   return (
     <div>

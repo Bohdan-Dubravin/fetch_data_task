@@ -26,14 +26,13 @@ export const postsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getAlbums.fulfilled, (state, action) => {
       state.albums = action.payload
-      console.log(state.albums)
       state.status = ''
     })
     builder.addCase(getAlbums.pending, (state, action) => {
       state.status = 'loading'
     })
     builder.addCase(getAlbums.rejected, (state, action) => {
-      state.status = action.payload
+      state.status = 'error'
     })
   },
 })

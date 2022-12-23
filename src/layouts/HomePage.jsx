@@ -1,12 +1,17 @@
-import { Outlet } from 'react-router'
-import TableList from '../components/TableList'
+import { useSelector } from 'react-redux'
+import AlbumsList from '../components/AlbumsList'
+import ModalComponent from '../components/ModalComponent'
 import UsersList from '../components/UsersList'
 
 const HomePage = () => {
+  const { show } = useSelector((state) => state.modal)
+
   return (
     <div>
       <UsersList />
-      <Outlet />
+      {show && (
+        <ModalComponent modalTitle='User Albums' component={<AlbumsList />} />
+      )}
     </div>
   )
 }
